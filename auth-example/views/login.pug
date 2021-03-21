@@ -1,0 +1,34 @@
+extends layout
+
+block stylesheets
+    link(href="/stylesheets/login.css" rel="stylesheet")
+
+
+block content
+    #login
+        h3(class="form-header") Login
+        if sucess_msg!=""
+            .alert.alert-success.alert-dismissible.fade.show(role="alert") #{sucess_msg}
+                button(type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close")
+        if error_msg!=""
+            .alert.alert-danger.alert-dismissible.fade.show(role="alert") #{error_msg }
+                button(type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close")
+        form( method="post" )
+            .mb-3
+                label(for="email" ) email
+                input(id="email" name="email" class="form-control")
+            .mb-3
+                label(for="password" class="form-label") Password
+                input(id="password" name="password" class="form-control")
+            .form-check.mb-3
+                input(type="checkbox" class="form-check-input" id="remember_me" name="rememberMe")
+                label(for="remember_me" class="form-check-label")
+                    b &nbsp;Remember Me
+            .mb-3
+                button(type="submit" class="btn btn-primary" value="submit" class="form-control") Login
+
+            .mb-3.row
+                label Don't you have an account&nbsp;&nbsp;&nbsp;
+                    a(href="/users/register" style="margin:auto") Register
+
+

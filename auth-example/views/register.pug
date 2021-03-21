@@ -1,0 +1,35 @@
+extends layout
+
+block stylesheets
+    link(href="/stylesheets/login.css" rel="stylesheet")
+
+block content
+    #login
+        h3(class="form-header") Login
+        .container
+            if errors
+                for error in errors
+                    .alert.alert-warning.alert-dismissible.fade.show(role="alert") #{error.msg}
+                        button(type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close")
+
+        form( method="post")
+            .mb-3
+                label(for="name" ) Name
+                input(id="name" name="name" class="form-control" value=name)
+            .mb-3
+                label(for="surname" ) Surname
+                input(id="surname" name="surname" class="form-control" value=surname)
+            .mb-3
+                label(for="email" ) Email
+                input(id="email" name="email" class="form-control" value=email)
+            .mb-3
+                label(for="password" class="form-label") Password
+                input(id="password" name="password" class="form-control")
+            .mb-3
+                label(for="retype_password" class="form-label") Retype Password
+                input(id="retype_password" name="retypePassword" class="form-control")
+            .mb-3
+                button(type="submit" class="btn btn-primary" value="submit" class="form-control") Register
+            .mb-3.row
+                label Already have an account&nbsp;&nbsp;&nbsp;
+                    a(href="/users/login" style="margin:auto") Login
