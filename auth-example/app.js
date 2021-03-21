@@ -11,11 +11,10 @@ const session = require("express-session");
 const bodyParser = require("body-parser");
 var app = express();
 const passport = require("passport");
-// db
+
+
+// connect to mongo db
 const uri = require("./config/keys").MongoUri;
-
-// connection
-
 mongose.connect(uri,{
   useNewUrlParser:true
 }).then(e=>console.log(e)).catch(e=>console.log(e));
@@ -27,6 +26,7 @@ require("./config/passport")(passport);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
+// initiate logger cooky , parser and  session middleware
 app.use(logger('dev'));
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -37,8 +37,10 @@ app.use(session({
   secret: 'keyboard cat'
 }));
 
+// resources
+app.use(express.static(path.join(__dirname, 'public')));
 
-// passport middleware
+// init flash middleware
 app.use(flash());
 app.use((req,res,next)=>{
   console.log("calling next");
@@ -47,11 +49,11 @@ app.use((req,res,next)=>{
   next();
 });
 
-app.use(express.static(path.join(__dirname, 'public')));
+// init passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
 
-
+// init route middleware
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 

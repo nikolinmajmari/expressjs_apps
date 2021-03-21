@@ -7,62 +7,20 @@ const passport = require("passport");
 /* GET users listing. */
 
 const User = require("../models/User");
+const usersController = require("../controllers/users_controller");
 
+router.get('/',(res)=>res.send("hey"));
 
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
+router.get("/login",usersController.user_login_get);
 
+router.get("/register",usersController.user_register_get);
 
-router.get("/login",function (req,res,next){
-  res.render("login");
-});
-
-router.get("/register",function (req,res,next){
-  res.render("register",{
-    name:null,surname:null,email:null
-  })
-})
-
-
-router.post("/register",async function (req,res,next){
-  let submittedData = req.body;
-  let form = new RegisterForm();
-  form.handleData(submittedData);
-  if(form.getValidationStatus()){
-    const {name,surname,email,password} = form.getFields();
-    console.log(email);
-    try{
-      if(await User.findOne({email:email})!==null){
-        throw "User Already Exists";
-      }else{
-        let user = new User({email,surname,name,password: await bcrypt.hash(password,10),});
-        user.save();
-        req.flash("sucess-msg","you were registered successfully");
-        res.redirect("/users/login");
-        return;
-      }
-    }catch (error){
-      console.log("error",error);
-      form.addError({"msg":error})
-    }
-  }
-  res.render("register",{
-    errors:form.getErrors(),
-    ...form.getFields()
-  });
-});
-
+router.post("/register",usersController.user_register_post);
 
 router.post("/login",passport.authenticate("local",{
   successRedirect: '/dashboard',
-    failureRedirect: '/login' }));
-// logout handle
+    failureRedirect: '/users/login' }));
 
-router.get("/logout",(req,res,next)=>{
-  req.flash("sucess_msg","you are logged out");
-  req.logout();
-  res.redirect("/users/login");
-})
+router.get("/logout",usersController.user_logout_get);
 
 module.exports = router;
