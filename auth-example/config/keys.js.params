@@ -1,0 +1,6 @@
+# replace <uri> with your mongo uri
+# remove params extention from the file
+
+module.exports = {
+    MongoUri:"<uri>"
+};
