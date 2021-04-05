@@ -1,0 +1,28 @@
+extends ..\layout
+block content
+    - var title
+    - var content
+    - var action = "new"
+    if note
+       - title = note.title;
+       - content = note.content;
+       - action = "edit"
+    .container-main
+        .container-header
+            .container-header-action
+                a(href="/notes" class="btn btn-dark") Back
+                label &nbsp;&nbsp;&nbsp;&nbsp;
+                if action=="new"
+                    h2 New Note
+                else
+                    h2 Edit Note
+        .container-body
+            form(method="post" action="")
+                .form-group
+                    label(for="note_title" class="form-label") Title
+                    input(class="form-control" type="text" name="title" id="note_title" value=title)
+                .form-group
+                    label(for="note_content" class=form-label) Content
+                    textarea(class="form-control" id="note_content" name="content" rows="5") #{content}
+                .form-group
+                    button(type="submit" value="save" class="btn btn-primary form-control") Save

@@ -1,0 +1,44 @@
+extends ..\layout
+
+
+block content
+    .container-main
+        .container-header
+            h3 My Notes
+            .container-header-action
+                div
+                    a(class="btn btn-outline-primary" href="/notes/new") Add Note
+        .container-body
+            for note in notes
+                - var noteId = "notes_item_"+note.id
+                .note(id=noteId)
+                    .note-header #{note.title}
+                        .note-header-action
+                            - var route = "/notes/"+note.id;
+                            a(class="btn btn-circle btn-outline-info" href=route)
+                                i(class="fas fa-pencil")
+                            span &nbsp;&nbsp;
+                            - var target = "#notes_item_"+note.id
+                            button(class="btn btn-circle btn-outline-danger delete-btn" data-href=route data-target-delete=target)
+                                i(class="fas fa-trash")
+                    .note-body #{note.content}
+block javascripts
+    script.
+        $(document).ready(function (){
+           $(".note .delete-btn").each(function (index,btn){
+              const href = $(btn).data("href");
+              const target = $(btn).data("target-delete");
+              $(btn).click(async function (){
+                  let response = await fetch(href,{
+                      method:"DELETE",
+                      headers:{
+                          "Content-Type":"Application/json"
+                      }
+                  });
+                  const {status, msg } = await response.json();
+                  if(status){
+                     document.querySelector(target).remove();
+                  }
+              });
+           });
+        });

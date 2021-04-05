@@ -1,6 +1,7 @@
 const RegisterForm = require("../forms/register_form");
 var bcrypt = require('bcryptjs');
 const passport = require("passport");
+const User = require("../../crud_api/models/User");
 
 
 module.exports.user_login_get = (req,res,next)=> res.render("login");

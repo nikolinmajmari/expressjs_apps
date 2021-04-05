@@ -26,6 +26,29 @@ app.use(bodyParser.urlencoded({
 // routes
 app.use("/users",usersRoute);
 
+const r = express.Router();
+r.use((req,res,next)=>{
+    console.log("hey from middleware 1");
+    next();
+})
+r.get("/id",(req,res,next)=>{
+    console.log("hey from get id  middleware 2");
+    next();
+});
+r.get("/",(req,res,next)=>{
+    console.log("hey from middleware 3 ");
+    next();
+})
+r.use((req,res,next)=>{
+    console.log("hey from  middleware 4");
+    next();
+})
+r.use("/id",(req,res,next)=>{
+    console.log("hey from middleware 5 on /id");
+    next();
+})
+
+app.use("/router",r);
 
 app.use((req,res)=>{
     res.send("error 404");
